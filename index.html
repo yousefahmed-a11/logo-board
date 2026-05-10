@@ -6,92 +6,112 @@
 <title>Logo Suggestion Board — Saudi Tourism</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0a0a0a; color: #e0e0e0; font-family: 'Outfit', sans-serif; min-height: 100vh; }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-  @keyframes cardIn { from { opacity: 0; transform: scale(0.85) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-  @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 700px; } }
-  @keyframes toast { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0a0a0a;color:#e0e0e0;font-family:'Outfit',sans-serif;min-height:100vh}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+  @keyframes cardIn{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  @keyframes slideDown{from{opacity:0;max-height:0}to{opacity:1;max-height:700px}}
+  @keyframes toast{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-  .header { padding: 24px 32px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .header h1 { font-size: 26px; font-weight: 800; margin: 0; background: linear-gradient(135deg, #c8f542, #42f5a7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.03em; }
-  .header .sub { color: #555; font-size: 12px; margin-top: 4px; }
-  .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  input, select { background: rgba(255,255,255,0.05); border: 1px solid #2a2a2a; border-radius: 8px; padding: 10px 14px; color: #e0e0e0; font-size: 14px; font-family: 'Outfit', sans-serif; outline: none; width: 100%; transition: border-color 0.2s; }
-  input:focus, select:focus { border-color: #c8f542; }
-  select { cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
-  select option { background: #1a1a1a; color: #e0e0e0; }
-  .btn { border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 13px; transition: all 0.2s; }
-  .btn-primary { background: linear-gradient(135deg, #c8f542, #a0d636); color: #0a0a0a; box-shadow: 0 0 20px #c8f54240; }
-  .btn-primary:hover { box-shadow: 0 0 30px #c8f54260; }
-  .btn-primary.active { background: #c8f542; box-shadow: none; }
-  .btn-ghost { background: rgba(255,255,255,0.05); border: 1px solid #2a2a2a; color: #888; }
-  .btn-ghost:hover { border-color: #444; color: #ccc; }
-  .btn-export { background: rgba(66,200,167,0.1); border: 1px solid #42c8a720; color: #42c8a7; }
-  .btn-export:hover { background: rgba(66,200,167,0.2); border-color: #42c8a750; }
-  .btn-add { background: #c8f542; color: #0a0a0a; font-weight: 700; padding: 10px 24px; font-size: 14px; white-space: nowrap; }
-  .btn-add:disabled { background: #2a2a2a; color: #555; cursor: default; box-shadow: none; }
-  .search-input { width: 180px; padding: 8px 12px; font-size: 12px; }
-  .panel { padding: 20px 32px; border-bottom: 1px solid #1a1a1a; background: rgba(200,245,66,0.02); animation: slideDown 0.3s ease forwards; overflow: hidden; }
-  .panel-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
-  .panel-label { font-size: 10px; color: #666; display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-  .panel-image-row { display: flex; align-items: center; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
-  .btn-upload { background: rgba(255,255,255,0.05); border: 1px dashed #333; border-radius: 8px; padding: 8px 16px; color: #888; cursor: pointer; font-size: 12px; font-family: 'Outfit', sans-serif; }
-  .btn-upload:hover { border-color: #555; }
-  .paste-hint { font-size: 11px; color: #444; }
-  .img-preview { width: 36px; height: 36px; border-radius: 6px; overflow: hidden; background: #fff; display: inline-flex; align-items: center; justify-content: center; }
-  .img-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .btn-remove-img { background: none; border: none; color: #f54272; cursor: pointer; font-size: 11px; font-family: 'Outfit', sans-serif; }
-  .board { padding: 20px 32px 40px; }
-  .lane { background: rgba(255,255,255,0.02); border-radius: 16px; padding: 16px 20px; margin-bottom: 12px; }
-  .lane-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .lane-icon { font-size: 22px; }
-  .lane-title { font-size: 15px; font-weight: 700; color: #f0f0f0; letter-spacing: -0.02em; }
-  .lane-title-ar { font-size: 11px; color: #777; }
-  .lane-count { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-  .lane-empty { color: #333; font-size: 12px; text-align: center; padding: 16px 0; }
-  .lane-cards { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 12px; }
-  .card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; min-width: 120px; transition: all 0.3s ease; }
-  .card:hover { background: rgba(255,255,255,0.07); }
-  .card-close { position: absolute; top: 4px; right: 6px; background: none; border: none; color: #666; cursor: pointer; font-size: 14px; line-height: 1; opacity: 0; transition: opacity 0.2s; }
-  .card:hover .card-close { opacity: 1; }
-  .card-img { width: 64px; height: 64px; border-radius: 10px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; }
-  .card-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .card-letter { width: 64px; height: 64px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; }
-  .card-name { font-size: 12px; font-weight: 600; color: #e0e0e0; text-align: center; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .card-sub { font-size: 9px; padding: 2px 8px; border-radius: 20px; }
-  .card-by { font-size: 9px; color: #555; }
-  .list-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .list-table th { text-align: left; padding: 10px 14px; color: #555; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #222; font-weight: 600; }
-  .list-table td { padding: 8px 14px; border-bottom: 1px solid #161616; }
-  .list-table tr:hover td { background: rgba(255,255,255,0.02); }
-  .list-img { width: 32px; height: 32px; border-radius: 6px; overflow: hidden; background: #fff; display: inline-flex; align-items: center; justify-content: center; }
-  .list-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .list-letter { width: 32px; height: 32px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
-  .list-empty { text-align: center; padding: 40px; color: #333; }
-  .footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1a1a1a; padding-top: 16px; flex-wrap: wrap; gap: 8px; }
-  .footer-info { font-size: 11px; color: #444; }
-  .footer-actions { display: flex; gap: 8px; }
-  .btn-reset { background: none; border: 1px solid #2a2a2a; border-radius: 6px; padding: 6px 14px; color: #555; cursor: pointer; font-size: 11px; font-family: 'Outfit', sans-serif; }
-  .btn-reset:hover { border-color: #f54272; color: #f54272; }
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 12px 24px; color: #c8f542; font-size: 13px; font-family: 'Outfit', sans-serif; animation: toast 0.3s ease; z-index: 999; }
-  @media (max-width: 768px) {
-    .header { padding: 16px; }
-    .panel { padding: 16px; }
-    .panel-grid { grid-template-columns: 1fr 1fr; }
-    .board { padding: 16px; }
-    .search-input { width: 120px; }
-    .header h1 { font-size: 20px; }
+  .header{padding:24px 32px;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .header h1{font-size:26px;font-weight:800;margin:0;background:linear-gradient(135deg,#c8f542,#42f5a7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.03em}
+  .header .sub{color:#555;font-size:12px;margin-top:4px}
+  .header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+  .sync-dot.live{background:#c8f542;animation:pulse 2s infinite}
+  .sync-dot.off{background:#f54272}
+  .sync-status{font-size:11px;color:#555;display:flex;align-items:center}
+
+  input,select{background:rgba(255,255,255,.05);border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;color:#e0e0e0;font-size:14px;font-family:'Outfit',sans-serif;outline:none;width:100%;transition:border-color .2s}
+  input:focus,select:focus{border-color:#c8f542}
+  select{cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+  select option{background:#1a1a1a;color:#e0e0e0}
+
+  .btn{border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;transition:all .2s}
+  .btn-primary{background:linear-gradient(135deg,#c8f542,#a0d636);color:#0a0a0a;box-shadow:0 0 20px #c8f54240}
+  .btn-primary:hover{box-shadow:0 0 30px #c8f54260}
+  .btn-primary.active{background:#c8f542;box-shadow:none}
+  .btn-ghost{background:rgba(255,255,255,.05);border:1px solid #2a2a2a;color:#888}
+  .btn-ghost:hover{border-color:#444;color:#ccc}
+  .btn-export{background:rgba(66,200,167,.1);border:1px solid #42c8a720;color:#42c8a7}
+  .btn-export:hover{background:rgba(66,200,167,.2);border-color:#42c8a750}
+  .btn-add{background:#c8f542;color:#0a0a0a;font-weight:700;padding:10px 24px;font-size:14px;white-space:nowrap}
+  .btn-add:disabled{background:#2a2a2a;color:#555;cursor:default;box-shadow:none}
+  .search-input{width:180px;padding:8px 12px;font-size:12px}
+
+  .panel{padding:20px 32px;border-bottom:1px solid #1a1a1a;background:rgba(200,245,66,.02);animation:slideDown .3s ease forwards;overflow:hidden}
+  .panel-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:12px;align-items:end}
+  .panel-label{font-size:10px;color:#666;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em}
+  .panel-image-row{display:flex;align-items:center;gap:16px;margin-top:12px;flex-wrap:wrap}
+  .btn-upload{background:rgba(255,255,255,.05);border:1px dashed #333;border-radius:8px;padding:8px 16px;color:#888;cursor:pointer;font-size:12px;font-family:'Outfit',sans-serif}
+  .img-preview{width:36px;height:36px;border-radius:6px;overflow:hidden;background:#fff;display:inline-flex;align-items:center;justify-content:center}
+  .img-preview img{max-width:100%;max-height:100%;object-fit:contain}
+  .btn-remove-img{background:none;border:none;color:#f54272;cursor:pointer;font-size:11px;font-family:'Outfit',sans-serif}
+
+  .board{padding:20px 32px 40px}
+  .lane{background:rgba(255,255,255,.02);border-radius:16px;padding:16px 20px;margin-bottom:12px}
+  .lane-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .lane-icon{font-size:22px}
+  .lane-title{font-size:15px;font-weight:700;color:#f0f0f0;letter-spacing:-.02em}
+  .lane-title-ar{font-size:11px;color:#777}
+  .lane-count{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+  .lane-empty{color:#333;font-size:12px;text-align:center;padding:16px 0}
+  .lane-cards{display:flex;flex-wrap:wrap;gap:10px;padding-top:12px}
+
+  .card{background:rgba(255,255,255,.04);border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;animation:cardIn .4s cubic-bezier(.34,1.56,.64,1) forwards;min-width:120px;transition:all .3s ease}
+  .card:hover{background:rgba(255,255,255,.07)}
+  .card-close{position:absolute;top:4px;right:6px;background:none;border:none;color:#666;cursor:pointer;font-size:14px;line-height:1;opacity:0;transition:opacity .2s}
+  .card:hover .card-close{opacity:1}
+  .card-letter{width:64px;height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700}
+  .card-name{font-size:12px;font-weight:600;color:#e0e0e0;text-align:center;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .card-sub{font-size:9px;padding:2px 8px;border-radius:20px}
+  .card-by{font-size:9px;color:#555}
+
+  .list-table{width:100%;border-collapse:collapse;font-size:13px}
+  .list-table th{text-align:left;padding:10px 14px;color:#555;font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #222;font-weight:600}
+  .list-table td{padding:8px 14px;border-bottom:1px solid #161616}
+  .list-table tr:hover td{background:rgba(255,255,255,.02)}
+  .list-letter{width:32px;height:32px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+
+  .footer{margin-top:20px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #1a1a1a;padding-top:16px;flex-wrap:wrap;gap:8px}
+  .footer-info{font-size:11px;color:#444}
+  .footer-actions{display:flex;gap:8px}
+  .btn-reset{background:none;border:1px solid #2a2a2a;border-radius:6px;padding:6px 14px;color:#555;cursor:pointer;font-size:11px;font-family:'Outfit',sans-serif}
+  .btn-reset:hover{border-color:#f54272;color:#f54272}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px 24px;font-size:13px;font-family:'Outfit',sans-serif;animation:toast .3s ease;z-index:999}
+  .toast.success{color:#c8f542}
+  .toast.error{color:#f54272}
+
+  .setup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:1000}
+  .setup-box{background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:32px;max-width:520px;width:90%}
+  .setup-box h2{font-size:20px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,#c8f542,#42f5a7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .setup-box p{font-size:13px;color:#888;line-height:1.6;margin-bottom:16px}
+  .setup-box input{margin-bottom:12px}
+  .setup-box .btn-primary{width:100%;padding:12px;font-size:15px}
+
+  @media(max-width:768px){
+    .header{padding:16px}.panel{padding:16px}.panel-grid{grid-template-columns:1fr 1fr}.board{padding:16px}.search-input{width:120px}.header h1{font-size:20px}
   }
 </style>
 </head>
 <body>
+
+<!-- Setup overlay -->
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup-box">
+    <h2>Setup — Connect to Google Sheets</h2>
+    <p>Paste your Google Apps Script Web App URL below. This connects the board to a shared Google Sheet so everyone sees the same data in real-time.</p>
+    <input type="text" id="apiUrlInput" placeholder="https://script.google.com/macros/s/...../exec">
+    <button class="btn btn-primary" onclick="saveApiUrl()">Connect</button>
+    <p style="margin-top:12px;font-size:11px;color:#444">The URL is saved in your browser. You only do this once.</p>
+  </div>
+</div>
+
 <div class="header">
   <div>
     <h1>Logo Suggestion Board</h1>
-    <p class="sub">Saudi Tourism Visitor Journey Map · <span id="totalCount">0</span> suggestions</p>
+    <p class="sub">Saudi Tourism Visitor Journey Map · <span id="totalCount">0</span> suggestions · <span class="sync-status"><span class="sync-dot live" id="syncDot"></span><span id="syncText">Live sync</span></span></p>
   </div>
   <div class="header-actions">
     <input type="text" class="search-input" placeholder="Search logos..." id="searchInput" oninput="render()">
@@ -101,7 +121,8 @@
     <button class="btn btn-primary" id="panelToggle" onclick="togglePanel()">+ Add Logo</button>
   </div>
 </div>
-<div id="addPanel" style="display:none;">
+
+<div id="addPanel" style="display:none">
   <div class="panel">
     <div class="panel-grid">
       <div>
@@ -122,14 +143,10 @@
       </div>
       <button class="btn btn-add" id="addBtn" onclick="addItem()" disabled>Add ↵</button>
     </div>
-    <div class="panel-image-row">
-      <button class="btn-upload" onclick="document.getElementById('fileInput').click()">📎 Upload Logo</button>
-      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(event)">
-      <span class="paste-hint">or paste (Ctrl+V)</span>
-      <span id="previewArea"></span>
-    </div>
+
   </div>
 </div>
+
 <div class="board" id="board"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -144,45 +161,176 @@ const CATEGORIES=[
   {id:"shop",label:"Shop",labelAr:"التسوق",icon:"⬡",color:"#f5d442",subs:["Malls & Local Markets","E-commerce & Retail"]},
   {id:"safe",label:"Travel Safe",labelAr:"السفر بأمان",icon:"◇",color:"#42f5f5",subs:["Banks & Payments","Telecom & Tourist Support","Health & Insurance"]}
 ];
-let suggestions=[],imageData=null,viewMode="board",panelOpen=false,idCounter=1;
-try{const s=JSON.parse(localStorage.getItem("logo-suggestions"));if(s){suggestions=s.items||[];idCounter=s.nextId||1;}}catch(e){}
-function save(){localStorage.setItem("logo-suggestions",JSON.stringify({items:suggestions,nextId:idCounter}));}
+
+let suggestions=[], viewMode="board", panelOpen=false, API_URL="", refreshTimer=null;
+
+// Check for saved API URL
+API_URL = localStorage.getItem("logo-board-api") || "";
+if(API_URL) {
+  document.getElementById("setupOverlay").style.display="none";
+  fetchData();
+  startAutoRefresh();
+}
+
+function saveApiUrl(){
+  const url=document.getElementById("apiUrlInput").value.trim();
+  if(!url||!url.includes("script.google.com")){showToast("Please paste a valid Google Apps Script URL","error");return;}
+  API_URL=url;
+  localStorage.setItem("logo-board-api",url);
+  document.getElementById("setupOverlay").style.display="none";
+  fetchData();
+  startAutoRefresh();
+  showToast("Connected successfully!","success");
+}
+
+function startAutoRefresh(){
+  if(refreshTimer)clearInterval(refreshTimer);
+  refreshTimer=setInterval(fetchData,10000);
+}
+
+async function fetchData(){
+  try{
+    const r=await fetch(API_URL);
+    const d=await r.json();
+    if(d.status==="ok"){
+      suggestions=d.data.map(row=>({
+        id:String(row.id),
+        name:row.name,
+        category:row.category,
+        subCategory:row.subCategory||null,
+        addedBy:row.addedBy||"Anonymous",
+        timestamp:row.timestamp
+      }));
+      render();
+      setSyncStatus(true);
+    }
+  }catch(e){
+    console.error("Fetch error:",e);
+    setSyncStatus(false);
+  }
+}
+
+async function postData(payload){
+  try{
+    setSyncStatus(true,"Syncing...");
+    await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain"},
+      body:JSON.stringify(payload),
+      mode:"no-cors"
+    });
+    // no-cors doesn't return readable response, so wait a moment then refresh
+    setTimeout(fetchData,1500);
+  }catch(e){
+    console.error("Post error:",e);
+    setSyncStatus(false);
+    showToast("Sync failed — check connection","error");
+  }
+}
+
+function setSyncStatus(ok,text){
+  const dot=document.getElementById("syncDot");
+  const txt=document.getElementById("syncText");
+  dot.className="sync-dot "+(ok?"live":"off");
+  txt.textContent=text||(ok?"Live sync":"Disconnected");
+}
+
+// Category dropdown
 const catSelect=document.getElementById("inputCat");
 CATEGORIES.forEach(c=>{const o=document.createElement("option");o.value=c.id;o.textContent=c.icon+" "+c.label;catSelect.appendChild(o);});
-function updateSubs(){const sub=document.getElementById("inputSub"),catId=document.getElementById("inputCat").value;sub.innerHTML='<option value="">Optional...</option>';sub.disabled=!catId;if(catId){CATEGORIES.find(c=>c.id===catId).subs.filter(Boolean).forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;sub.appendChild(o);});}checkValid();}
-function checkValid(){const n=document.getElementById("inputName").value.trim(),c=document.getElementById("inputCat").value;document.getElementById("addBtn").disabled=!n||!c;}
+
+function updateSubs(){
+  const sub=document.getElementById("inputSub"),catId=document.getElementById("inputCat").value;
+  sub.innerHTML='<option value="">Optional...</option>';sub.disabled=!catId;
+  if(catId){CATEGORIES.find(c=>c.id===catId).subs.filter(Boolean).forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;sub.appendChild(o);});}
+  checkValid();
+}
+
+function checkValid(){
+  const n=document.getElementById("inputName").value.trim(),c=document.getElementById("inputCat").value;
+  document.getElementById("addBtn").disabled=!n||!c;
+}
 document.getElementById("inputName").addEventListener("input",checkValid);
-function togglePanel(){panelOpen=!panelOpen;document.getElementById("addPanel").style.display=panelOpen?"block":"none";document.getElementById("panelToggle").textContent=panelOpen?"✕ Close":"+ Add Logo";document.getElementById("panelToggle").className=panelOpen?"btn btn-primary active":"btn btn-primary";}
-function toggleView(){viewMode=viewMode==="board"?"list":"board";document.getElementById("viewToggle").textContent=viewMode==="board"?"☰ List":"◫ Board";render();}
-function handleFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{imageData=ev.target.result;showPreview();};r.readAsDataURL(f);}
-document.addEventListener("paste",e=>{const items=e.clipboardData?.items;if(!items)return;for(const item of items){if(item.type.startsWith("image/")){e.preventDefault();const f=item.getAsFile(),r=new FileReader();r.onload=ev=>{imageData=ev.target.result;showPreview();};r.readAsDataURL(f);break;}}});
-function showPreview(){const a=document.getElementById("previewArea");a.innerHTML=imageData?`<span style="display:inline-flex;align-items:center;gap:8px"><span class="img-preview"><img src="${imageData}" alt=""></span><button class="btn-remove-img" onclick="clearImage()">Remove</button></span>`:"";}
-function clearImage(){imageData=null;document.getElementById("fileInput").value="";showPreview();}
-function addItem(){const n=document.getElementById("inputName").value.trim(),c=document.getElementById("inputCat").value,s=document.getElementById("inputSub").value,b=document.getElementById("inputBy").value.trim();if(!n||!c)return;suggestions.push({id:idCounter++,name:n,category:c,subCategory:s||null,imageUrl:imageData,addedBy:b||"Anonymous",timestamp:Date.now()});save();render();document.getElementById("inputName").value="";document.getElementById("inputCat").value="";document.getElementById("inputSub").value="";document.getElementById("inputSub").disabled=true;clearImage();checkValid();showToast("Added: "+n);}
-function removeItem(id){suggestions=suggestions.filter(s=>s.id!==id);save();render();}
-function resetAll(){if(confirm("Clear all suggestions?")){suggestions=[];idCounter=1;localStorage.removeItem("logo-suggestions");render();}}
-function showToast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);}
+
+function togglePanel(){
+  panelOpen=!panelOpen;
+  document.getElementById("addPanel").style.display=panelOpen?"block":"none";
+  document.getElementById("panelToggle").textContent=panelOpen?"✕ Close":"+ Add Logo";
+  document.getElementById("panelToggle").className=panelOpen?"btn btn-primary active":"btn btn-primary";
+}
+
+function toggleView(){
+  viewMode=viewMode==="board"?"list":"board";
+  document.getElementById("viewToggle").textContent=viewMode==="board"?"☰ List":"◫ Board";
+  render();
+}
+
+function addItem(){
+  const n=document.getElementById("inputName").value.trim();
+  const c=document.getElementById("inputCat").value;
+  const s=document.getElementById("inputSub").value;
+  const b=document.getElementById("inputBy").value.trim();
+  if(!n||!c)return;
+
+  const item={id:Date.now(),name:n,category:c,subCategory:s||"",addedBy:b||"Anonymous",hasImage:false};
+
+  // Optimistic add
+  suggestions.push({...item,timestamp:new Date().toISOString()});
+  render();
+
+  // Sync to Google Sheets
+  postData({action:"add",item});
+
+  document.getElementById("inputName").value="";
+  document.getElementById("inputCat").value="";
+  document.getElementById("inputSub").value="";
+  document.getElementById("inputSub").disabled=true;
+  checkValid();
+  showToast("Added: "+n,"success");
+}
+
+function removeItem(id){
+  suggestions=suggestions.filter(s=>String(s.id)!==String(id));
+  render();
+  postData({action:"delete",id:String(id)});
+}
+
+function resetAll(){
+  if(confirm("Clear ALL suggestions for everyone?")){
+    suggestions=[];render();
+    postData({action:"clear"});
+  }
+}
+
+function showToast(msg,type){
+  const t=document.createElement("div");t.className="toast "+(type||"success");t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
 
 function exportCSV(){
-  if(!suggestions.length){showToast("No data to export");return;}
+  if(!suggestions.length){showToast("No data","error");return;}
   const cm={};CATEGORIES.forEach(c=>cm[c.id]=c.label);
   let csv="\uFEFF"+"Entity,Category,Sub-category,Added By,Date\n";
-  suggestions.forEach(s=>{csv+=[s.name,cm[s.category]||s.category,s.subCategory||"",s.addedBy,new Date(s.timestamp).toLocaleDateString("en-GB")].map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")+"\n";});
-  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="logo_suggestions.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
-  showToast("CSV exported — "+suggestions.length+" rows");
+  suggestions.forEach(s=>{csv+=[s.name,cm[s.category]||s.category,s.subCategory||"",s.addedBy,s.timestamp?new Date(s.timestamp).toLocaleDateString("en-GB"):""].map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")+"\n";});
+  dl(csv,"logo_suggestions.csv","text/csv;charset=utf-8");
+  showToast("CSV exported","success");
 }
 
 function exportXLSX(){
-  if(!suggestions.length){showToast("No data to export");return;}
+  if(!suggestions.length){showToast("No data","error");return;}
   const cm={};CATEGORIES.forEach(c=>cm[c.id]=c.label);
-  const data=[["Entity","Category","Sub-category","Added By","Date","Has Logo"]];
-  suggestions.forEach(s=>data.push([s.name,cm[s.category]||s.category,s.subCategory||"",s.addedBy,new Date(s.timestamp).toLocaleDateString("en-GB"),s.imageUrl?"Yes":"No"]));
-  const ws=XLSX.utils.aoa_to_sheet(data);ws["!cols"]=[{wch:30},{wch:22},{wch:28},{wch:16},{wch:12},{wch:10}];
+  const data=[["Entity","Category","Sub-category","Added By","Date"]];
+  suggestions.forEach(s=>data.push([s.name,cm[s.category]||s.category,s.subCategory||"",s.addedBy,s.timestamp?new Date(s.timestamp).toLocaleDateString("en-GB"):""]));
+  const ws=XLSX.utils.aoa_to_sheet(data);ws["!cols"]=[{wch:30},{wch:22},{wch:28},{wch:16},{wch:12}];
   const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Suggestions");
   const sum=[["Category","Count"]];CATEGORIES.forEach(c=>sum.push([c.label,suggestions.filter(s=>s.category===c.id).length]));sum.push(["Total",suggestions.length]);
   const ws2=XLSX.utils.aoa_to_sheet(sum);ws2["!cols"]=[{wch:22},{wch:10}];XLSX.utils.book_append_sheet(wb,ws2,"Summary");
   XLSX.writeFile(wb,"logo_suggestions.xlsx");
-  showToast("Excel exported — "+suggestions.length+" rows");
+  showToast("Excel exported","success");
+}
+
+function dl(content,name,type){
+  const b=new Blob([content],{type});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);
 }
 
 function render(){
@@ -190,14 +338,22 @@ function render(){
   const filtered=search?suggestions.filter(s=>s.name.toLowerCase().includes(search)):suggestions;
   document.getElementById("totalCount").textContent=suggestions.length;
   const board=document.getElementById("board");
+
   if(viewMode==="board"){
-    board.innerHTML=CATEGORIES.map(cat=>{const items=filtered.filter(s=>s.category===cat.id);return`<div class="lane" style="border:1px solid ${cat.color}20"><div class="lane-header"><span class="lane-icon" style="color:${cat.color};filter:drop-shadow(0 0 8px ${cat.color}50)">${cat.icon}</span><div style="flex:1"><div class="lane-title">${cat.label}</div><div class="lane-title-ar">${cat.labelAr}</div></div><span class="lane-count" style="background:${cat.color}20;color:${cat.color}">${items.length}</span></div>${items.length===0?`<div class="lane-empty" style="border-top:1px dashed ${cat.color}20">No suggestions yet — be the first!</div>`:`<div class="lane-cards" style="border-top:1px solid ${cat.color}15">${items.map(i=>cardHTML(i,cat)).join("")}</div>`}</div>`;}).join("");
-  } else {
-    board.innerHTML=`<div style="overflow-x:auto"><table class="list-table"><thead><tr><th>Logo</th><th>Entity</th><th>Category</th><th>Sub-category</th><th>Added By</th><th></th></tr></thead><tbody>${filtered.length===0?`<tr><td colspan="6" class="list-empty">No suggestions yet</td></tr>`:filtered.map(item=>{const cat=CATEGORIES.find(c=>c.id===item.category);return`<tr><td>${item.imageUrl?`<span class="list-img"><img src="${item.imageUrl}" alt=""></span>`:`<span class="list-letter" style="background:${cat?cat.color+'20':'#222'};color:${cat?cat.color:'#888'}">${item.name.charAt(0).toUpperCase()}</span>`}</td><td style="color:#e0e0e0;font-weight:600">${esc(item.name)}</td><td><span style="color:${cat?cat.color:'#888'};font-size:12px">${cat?cat.icon+' '+cat.label:'—'}</span></td><td style="color:#888;font-size:12px">${item.subCategory||'—'}</td><td style="color:#555;font-size:12px">${esc(item.addedBy)}</td><td><button onclick="removeItem(${item.id})" style="background:none;border:none;color:#444;cursor:pointer;font-size:13px">✕</button></td></tr>`;}).join("")}</tbody></table></div>`;
+    board.innerHTML=CATEGORIES.map(cat=>{const items=filtered.filter(s=>s.category===cat.id);return`<div class="lane" style="border:1px solid ${cat.color}20"><div class="lane-header"><span class="lane-icon" style="color:${cat.color};filter:drop-shadow(0 0 8px ${cat.color}50)">${cat.icon}</span><div style="flex:1"><div class="lane-title">${cat.label}</div><div class="lane-title-ar">${cat.labelAr}</div></div><span class="lane-count" style="background:${cat.color}20;color:${cat.color}">${items.length}</span></div>${items.length===0?`<div class="lane-empty" style="border-top:1px dashed ${cat.color}20">No suggestions yet</div>`:`<div class="lane-cards" style="border-top:1px solid ${cat.color}15">${items.map(i=>cardHTML(i,cat)).join("")}</div>`}</div>`;}).join("");
+  }else{
+    board.innerHTML=`<div style="overflow-x:auto"><table class="list-table"><thead><tr><th></th><th>Entity</th><th>Category</th><th>Sub-category</th><th>Added By</th><th></th></tr></thead><tbody>${filtered.length===0?`<tr><td colspan="6" style="text-align:center;padding:40px;color:#333">No suggestions yet</td></tr>`:filtered.map(item=>{const cat=CATEGORIES.find(c=>c.id===item.category);return`<tr><td><span class="list-letter" style="background:${cat?cat.color+'20':'#222'};color:${cat?cat.color:'#888'}">${item.name.charAt(0).toUpperCase()}</span></td><td style="color:#e0e0e0;font-weight:600">${esc(item.name)}</td><td><span style="color:${cat?cat.color:'#888'};font-size:12px">${cat?cat.icon+' '+cat.label:'—'}</span></td><td style="color:#888;font-size:12px">${item.subCategory||'—'}</td><td style="color:#555;font-size:12px">${esc(item.addedBy)}</td><td><button onclick="removeItem('${item.id}')" style="background:none;border:none;color:#444;cursor:pointer;font-size:13px">✕</button></td></tr>`;}).join("")}</tbody></table></div>`;
   }
-  if(suggestions.length>0){board.innerHTML+=`<div class="footer"><span class="footer-info">${suggestions.length} total · ${new Set(suggestions.map(s=>s.category)).size} categories · ${suggestions.filter(s=>s.imageUrl).length} with logos</span><div class="footer-actions"><button class="btn-reset" onclick="exportCSV()">↓ CSV</button><button class="btn-reset" onclick="exportXLSX()">↓ Excel</button><button class="btn-reset" onclick="resetAll()">Reset All</button></div></div>`;}
+
+  if(suggestions.length>0){
+    board.innerHTML+=`<div class="footer"><span class="footer-info">${suggestions.length} total · ${new Set(suggestions.map(s=>s.category)).size} categories</span><div class="footer-actions"><button class="btn-reset" onclick="exportCSV()">↓ CSV</button><button class="btn-reset" onclick="exportXLSX()">↓ Excel</button><button class="btn-reset" onclick="resetAll()">Reset All</button></div></div>`;
+  }
 }
-function cardHTML(item,cat){return`<div class="card" style="border:1px solid ${cat.color}40"><button class="card-close" onclick="removeItem(${item.id})">✕</button>${item.imageUrl?`<div class="card-img"><img src="${item.imageUrl}" alt="${esc(item.name)}"></div>`:`<div class="card-letter" style="background:linear-gradient(135deg,${cat.color}30,${cat.color}10);color:${cat.color}">${item.name.charAt(0).toUpperCase()}</div>`}<span class="card-name">${esc(item.name)}</span>${item.subCategory?`<span class="card-sub" style="color:${cat.color};background:${cat.color}15">${esc(item.subCategory)}</span>`:''}<span class="card-by">by ${esc(item.addedBy)}</span></div>`;}
+
+function cardHTML(item,cat){
+  return`<div class="card" style="border:1px solid ${cat.color}40"><button class="card-close" onclick="removeItem('${item.id}')">✕</button><div class="card-letter" style="background:linear-gradient(135deg,${cat.color}30,${cat.color}10);color:${cat.color}">${item.name.charAt(0).toUpperCase()}</div><span class="card-name">${esc(item.name)}</span>${item.subCategory?`<span class="card-sub" style="color:${cat.color};background:${cat.color}15">${esc(item.subCategory)}</span>`:''}<span class="card-by">by ${esc(item.addedBy)}</span></div>`;
+}
+
 function esc(s){const d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
 render();
 </script>
