@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logo Suggestion Board — Saudi Tourism</title>
+<title>Entity Suggestion Ecosystem Map</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -83,12 +83,7 @@
   .toast.success{color:#c8f542}
   .toast.error{color:#f54272}
 
-  .setup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:1000}
-  .setup-box{background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:32px;max-width:520px;width:90%}
-  .setup-box h2{font-size:20px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,#c8f542,#42f5a7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  .setup-box p{font-size:13px;color:#888;line-height:1.6;margin-bottom:16px}
-  .setup-box input{margin-bottom:12px}
-  .setup-box .btn-primary{width:100%;padding:12px;font-size:15px}
+
 
   @media(max-width:768px){
     .header{padding:16px}.panel{padding:16px}.panel-grid{grid-template-columns:1fr 1fr}.board{padding:16px}.search-input{width:120px}.header h1{font-size:20px}
@@ -97,28 +92,18 @@
 </head>
 <body>
 
-<!-- Setup overlay -->
-<div class="setup-overlay" id="setupOverlay">
-  <div class="setup-box">
-    <h2>Setup — Connect to Google Sheets</h2>
-    <p>Paste your Google Apps Script Web App URL below. This connects the board to a shared Google Sheet so everyone sees the same data in real-time.</p>
-    <input type="text" id="apiUrlInput" placeholder="https://script.google.com/macros/s/...../exec">
-    <button class="btn btn-primary" onclick="saveApiUrl()">Connect</button>
-    <p style="margin-top:12px;font-size:11px;color:#444">The URL is saved in your browser. You only do this once.</p>
-  </div>
-</div>
+
 
 <div class="header">
   <div>
-    <h1>Logo Suggestion Board</h1>
+    <h1>Entity Suggestion Ecosystem Map</h1>
     <p class="sub">Saudi Tourism Visitor Journey Map · <span id="totalCount">0</span> suggestions · <span class="sync-status"><span class="sync-dot live" id="syncDot"></span><span id="syncText">Live sync</span></span></p>
   </div>
   <div class="header-actions">
-    <input type="text" class="search-input" placeholder="Search logos..." id="searchInput" oninput="render()">
-    <button class="btn btn-export" onclick="exportCSV()">↓ CSV</button>
-    <button class="btn btn-export" onclick="exportXLSX()">↓ Excel</button>
+    <input type="text" class="search-input" placeholder="Search..." id="searchInput" oninput="render()">
+    <button class="btn btn-export" onclick="exportCSV()">↓ Export CSV</button>
     <button class="btn btn-ghost" id="viewToggle" onclick="toggleView()">☰ List</button>
-    <button class="btn btn-primary" id="panelToggle" onclick="togglePanel()">+ Add Logo</button>
+    <button class="btn btn-primary" id="panelToggle" onclick="togglePanel()">+ Add Entity</button>
   </div>
 </div>
 
@@ -149,7 +134,6 @@
 
 <div class="board" id="board"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const CATEGORIES=[
   {id:"inspire",label:"Inspire & Plan",labelAr:"الإلهام والتخطيط",icon:"✦",color:"#c8f542",subs:["Marketing & Promotion","Planning & Booking","Visas & Entry"]},
@@ -162,26 +146,11 @@ const CATEGORIES=[
   {id:"safe",label:"Travel Safe",labelAr:"السفر بأمان",icon:"◇",color:"#42f5f5",subs:["Banks & Payments","Telecom & Tourist Support","Health & Insurance"]}
 ];
 
-let suggestions=[], viewMode="board", panelOpen=false, API_URL="", refreshTimer=null;
+let suggestions=[], viewMode="board", panelOpen=false, refreshTimer=null;
+const API_URL="https://script.google.com/macros/s/AKfycbzTuHU-wv0cXUXOPlQCH5cKQAfcV55ijWV1D2qqZQb0wd0AjRV3xgHu81wWZPjbSWZA/exec";
 
-// Check for saved API URL
-API_URL = localStorage.getItem("logo-board-api") || "";
-if(API_URL) {
-  document.getElementById("setupOverlay").style.display="none";
-  fetchData();
-  startAutoRefresh();
-}
-
-function saveApiUrl(){
-  const url=document.getElementById("apiUrlInput").value.trim();
-  if(!url||!url.includes("script.google.com")){showToast("Please paste a valid Google Apps Script URL","error");return;}
-  API_URL=url;
-  localStorage.setItem("logo-board-api",url);
-  document.getElementById("setupOverlay").style.display="none";
-  fetchData();
-  startAutoRefresh();
-  showToast("Connected successfully!","success");
-}
+fetchData();
+startAutoRefresh();
 
 function startAutoRefresh(){
   if(refreshTimer)clearInterval(refreshTimer);
@@ -255,7 +224,7 @@ document.getElementById("inputName").addEventListener("input",checkValid);
 function togglePanel(){
   panelOpen=!panelOpen;
   document.getElementById("addPanel").style.display=panelOpen?"block":"none";
-  document.getElementById("panelToggle").textContent=panelOpen?"✕ Close":"+ Add Logo";
+  document.getElementById("panelToggle").textContent=panelOpen?"✕ Close":"+ Add Entity";
   document.getElementById("panelToggle").className=panelOpen?"btn btn-primary active":"btn btn-primary";
 }
 
@@ -312,25 +281,8 @@ function exportCSV(){
   const cm={};CATEGORIES.forEach(c=>cm[c.id]=c.label);
   let csv="\uFEFF"+"Entity,Category,Sub-category,Added By,Date\n";
   suggestions.forEach(s=>{csv+=[s.name,cm[s.category]||s.category,s.subCategory||"",s.addedBy,s.timestamp?new Date(s.timestamp).toLocaleDateString("en-GB"):""].map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")+"\n";});
-  dl(csv,"logo_suggestions.csv","text/csv;charset=utf-8");
+  const b=new Blob([csv],{type:"text/csv;charset=utf-8"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download="entity_suggestions.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);
   showToast("CSV exported","success");
-}
-
-function exportXLSX(){
-  if(!suggestions.length){showToast("No data","error");return;}
-  const cm={};CATEGORIES.forEach(c=>cm[c.id]=c.label);
-  const data=[["Entity","Category","Sub-category","Added By","Date"]];
-  suggestions.forEach(s=>data.push([s.name,cm[s.category]||s.category,s.subCategory||"",s.addedBy,s.timestamp?new Date(s.timestamp).toLocaleDateString("en-GB"):""]));
-  const ws=XLSX.utils.aoa_to_sheet(data);ws["!cols"]=[{wch:30},{wch:22},{wch:28},{wch:16},{wch:12}];
-  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Suggestions");
-  const sum=[["Category","Count"]];CATEGORIES.forEach(c=>sum.push([c.label,suggestions.filter(s=>s.category===c.id).length]));sum.push(["Total",suggestions.length]);
-  const ws2=XLSX.utils.aoa_to_sheet(sum);ws2["!cols"]=[{wch:22},{wch:10}];XLSX.utils.book_append_sheet(wb,ws2,"Summary");
-  XLSX.writeFile(wb,"logo_suggestions.xlsx");
-  showToast("Excel exported","success");
-}
-
-function dl(content,name,type){
-  const b=new Blob([content],{type});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);
 }
 
 function render(){
@@ -346,7 +298,7 @@ function render(){
   }
 
   if(suggestions.length>0){
-    board.innerHTML+=`<div class="footer"><span class="footer-info">${suggestions.length} total · ${new Set(suggestions.map(s=>s.category)).size} categories</span><div class="footer-actions"><button class="btn-reset" onclick="exportCSV()">↓ CSV</button><button class="btn-reset" onclick="exportXLSX()">↓ Excel</button><button class="btn-reset" onclick="resetAll()">Reset All</button></div></div>`;
+    board.innerHTML+=`<div class="footer"><span class="footer-info">${suggestions.length} total · ${new Set(suggestions.map(s=>s.category)).size} categories</span><div class="footer-actions"><button class="btn-reset" onclick="resetAll()">Reset All</button></div></div>`;
   }
 }
 
